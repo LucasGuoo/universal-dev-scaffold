@@ -1,0 +1,20 @@
+# OS
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Editor / IDE temp
+*.swp
+*~
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Python (if any scripts added later)
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+.env.*
