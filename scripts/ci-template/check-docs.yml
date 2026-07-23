@@ -1,0 +1,29 @@
+# 文档健康检查 CI（opt-in 模板）
+#
+# 这是给采用本脚手架的项目用的可选模板：
+#   1. 复制本文件到项目的 .github/workflows/check-docs.yml 即启用；
+#   2. 不复制则不开启任何 CI（符合脚手架「不强制 CI」原则）。
+#
+# 作用：PR / push 到 main 时校验 docs↔src 一致，并要求 src/ 函数·类均有 docstring。
+
+name: check-docs
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  check-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Verify docs stay in sync with src/
+        run: python scripts/check-docs.py
+      - name: Verify every src function/class has a docstring (中文, 按需小节)
+        run: python scripts/check-docs.py --require-docstrings
+      - name: Verify generated reference docs are up to date
+        run: python scripts/gen-refs.py --check

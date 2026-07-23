@@ -33,6 +33,11 @@ proposal.md → 你确认 → design.md → 你确认 → tasks.md → 你确认
 - 密钥 / `.env` 不入 git、不打印日志。
 - 高风险操作（删文件、推远程、改主干 / 基础设施 / 协议）二次确认。
 
+## 文档工具链（可选，详见 `constitution.md` #11）
+- docstring 即真相源：`scripts/gen-refs.py` 生成 `docs/reference/_generated/`，改代码顺手补 docstring（中文、小节按需写）。
+- 自查一致性：`python scripts/check-docs.py`（加 `--require-docstrings` 强制全员有 docstring）。
+- 工具为零依赖加成，非核心框架；需要 CI 把关时把 `scripts/ci-template/check-docs.yml` 复制到 `.github/workflows/`（opt-in）。
+
 ## Handoff Protocol（跨 Agent / 跨工具交接）
 1. 当前 Agent 在对应 `tasks.md` 末尾「接手上下文」补：阶段 / 已完成 / 未完成及阻塞 / 关键决策 / 建议下一步。
 2. `git push`。

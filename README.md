@@ -48,6 +48,10 @@
     ├── 01-spec-driven/RULE.mdc
     ├── 02-quality-gates/RULE.mdc
     └── 03-architecture-invariants/RULE.mdc
+└── scripts/                       # 文档工具链（可选，仅标准库）
+    ├── gen-refs.py                # docstring → docs/reference/_generated/
+    ├── check-docs.py              # docs↔src 一致性校验（可 --require-docstrings）
+    └── ci-template/check-docs.yml # opt-in CI 模板（按需复制到 .github/workflows/）
 ```
 
 ## 快速开始（复制即用）
@@ -81,6 +85,16 @@
 - 在 `constitution.md` 追加业务硬约束（如触发权分离、HMAC 验签）；
 - 在 `03-architecture-invariants` 填本项目不可变项；
 - 额外 `docs/` 放架构基线 / 协议规范等业务文档。
+
+## 文档工具链（可选）
+
+脚手架附带一套**零依赖**（仅 Python 标准库）的文档工具链，把 docstring 当作 reference 文档的唯一真相源：
+
+- `scripts/gen-refs.py` — 扫描 `src/`，把每个函数/类的 docstring 渲染成 `docs/reference/_generated/*.md`。
+- `scripts/check-docs.py` — 校验 `docs/` 与 `src/` 一致；`--require-docstrings` 可强制全员有 docstring。
+- `scripts/ci-template/check-docs.yml` — opt-in 的 GitHub Actions 模板，需要 CI 把关时复制到 `.github/workflows/` 即可。
+
+docstring 约定（中文、小节按需写）见 `docs/constitution.md` #11；用法见 `AGENTS.md`「文档工具链」节。该工具链**非核心框架依赖**，符合 YAGNI，不默认开启 CI。
 
 ## License
 

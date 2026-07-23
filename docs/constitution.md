@@ -32,3 +32,10 @@
 
 ## 10. 多代理兼容
 - 行为约定统一在 `AGENTS.md`；`CLAUDE.md` / `COPILOT.md` / `GEMINI.md` 等仅做重定向。
+
+## 11. 文档与代码同步（docstring 即真相源，可选工具链）
+- 采用「docstring 即真相源」：函数/类的 docstring 是 reference 文档的唯一来源，由 `scripts/gen-refs.py`（仅标准库）自动渲染到 `docs/reference/_generated/`。
+- docstring **用中文写**、小节全部可选按需写（不必凑齐）：Google 摘要（一句话说清功能）+ 自定义运维小节（职责/触发/入参/处理顺序/返回/关键分支/关键副作用/配置依赖/设计原因/运维注意/关联），空行分隔摘要与小节；含关键算法或非直观决策的应补「处理顺序」（主流程步骤）「设计原因」（取舍/坑）。
+- 小节标题自由（`标题：内容` 任意中文均可）；生成器按 `CANON` 仅决定渲染顺序。
+- AI 改函数必须同 diff 更新其 docstring；生成器自动取行号与签名，永不失真。`scripts/check-docs.py` 校验 docs↔src 一致性，并可 `--require-docstrings` 强制全员有 docstring。
+- 该工具链为**可选加成**，非核心框架依赖；CI 模板见 `scripts/ci-template/check-docs.yml`（opt-in，默认不开启），符合 YAGNI。
