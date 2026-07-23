@@ -18,6 +18,12 @@
 - **多文件 / 新功能 / 协议变更 / 架构变化** → 走完整 spec 流程
 - **不确定** → 走 spec（安全侧）
 
+## 文档闸门（每次改动必过，详见 `docs/doc-lifecycle.md` / `.codebuddy/rules/04-doc-lifecycle`）
+- 改 `src/` 函数/类 → **必须同 diff 补中文 docstring**（reference 由 `gen-refs.py` 自动渲染，禁手改）。
+- 引入外部依赖 / 接口对接 → **必须建 `docs/integration/` 契约**（决策树拦截项，写一次即可）。
+- 推翻旧架构决策 → **必须新增 ADR 标记旧 ADR `Superseded`（旧正文不改）**，并在 `verdict.md` 阶段三勾选。
+- 验收前 → 跑 `python scripts/check-docs.py` 自查，无 docstring 缺失 / 索引错误再合并。
+
 ## Spec 标准流程（5 步确认制）
 ```
 proposal.md → 你确认 → design.md → 你确认 → tasks.md → 你确认 → 逐条实现 → verdict.md → 归档 specs/archive/
