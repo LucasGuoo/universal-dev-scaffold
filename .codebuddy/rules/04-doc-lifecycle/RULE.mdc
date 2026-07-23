@@ -1,0 +1,18 @@
+---
+description: 文档分层与生命周期红线（universal-dev-scaffold 框架）
+alwaysApply: true
+enabled: true
+---
+
+# 文档分层与生命周期红线
+
+本项目文档维护遵循分层模型（详见 `docs/doc-lifecycle.md`）。下列为 IDE 自动加载的硬约束，不可跳过：
+
+1. **docstring 即真相源**：改 `src/` 下任何函数/类，必须同 diff 更新其中文 docstring；`docs/reference/_generated/` 由 `scripts/gen-refs.py` 自动渲染，**禁手改**。
+2. **引入外部依赖 / 接口对接**：必须建 `docs/integration/` 契约文档（决策树拦截项），写一次即可，行为变了才顺手改。
+3. **ADR 被推翻**：必须**新增一条 ADR** 标记旧 ADR 为 `Superseded` 并 `--superseded-by` 指向新 ADR；**旧 ADR 正文一字不改**（追加不改写，抗 LLM 漂移）。
+4. **specs 是过程文档**：验收即归档到 `specs/archive/`，归档后不维护；状态靠"文件在 active 还是 archive"表达，不加元数据块。
+5. **Tier 1 写一次**：`how-to` / `tutorial` / `runbook` 在触发点写出，仅当行为确实变更才顺手改，不强制同 diff、无状态机。
+6. **提交前自查**：跑 `python scripts/check-docs.py`（可加 `--require-docstrings`），清掉 docstring 缺失 / 索引错误后再合并。
+
+> 本规则是 `docs/doc-lifecycle.md` 的机器红线浓缩版；完整分层、触发矩阵、ADR 状态机见该文档。
