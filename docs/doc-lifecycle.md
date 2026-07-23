@@ -27,9 +27,10 @@
 - `how-to`、`tutorial`、`integration` 契约、`runbook`：在触发点写出，**之后仅在"行为确实变了"时顺手改**；不做状态机、不强求同 diff 更新（降低 LLM 负担与漂移面）。
 
 ### Tier 2 — 需要真正生命周期的文档（**动态维护**）
-- **ADR（架构决策记录）**：决策会随时间被推翻，必须有生命周期。
-- **constitution 业务约束 / explanation（架构原理）**：随 ADR 演进；当某 ADR 被推翻，它们跟着变。
-- **只有这一层用状态机与 `doc-meta` 元数据。**
+- **`explanation/`（架构原理 / 决策记录）**：讲解"为什么这样设计"，其中记录具体决策的文档即是 **ADR**——带 `doc-meta` 状态机、可 `Superseded`。
+- **constitution 业务约束**：随 ADR 演进；当某 ADR 被推翻，相关 explanation 与 constitution 同步。
+- **ADR 不是独立目录，而是 `explanation/` 里"带状态的子类"**：推翻决策时在同一目录追加新篇并标记旧篇 `Superseded`，**不新建 `architecture/adr/` 目录**。
+- **只有这一层（explanation 中记录决策的 ADR 子类）用状态机与 `doc-meta` 元数据。**
 
 > 设计取舍：原方案给每类文档都加状态机会让 LLM 在每次变更都背负"更新多处散文"的义务，恰恰是漂移高发区。收缩到 Tier 2 后，绝大多数文档是"写了就基本不动"，维护成本与漂移风险同步下降。
 
@@ -41,12 +42,12 @@
 |---|---|---|---|
 | 需求澄清 | PRD / change-proposal | Tier 0 | proposal |
 | 设计决策（普通） | explanation | Tier 2 | design |
-| 设计决策（重大/可逆风险高） | **ADR** | Tier 2 | design |
+| 设计决策（重大/可逆风险高） | 在 `explanation/` 写决策记录（ADR） | Tier 2 | design |
 | 编码实现 | reference 条目（自动） | Tier 0 | implementation |
 | 验收 | how-to | Tier 1 | verdict |
 | 发布 / 里程碑 | tutorial | Tier 1 | release |
 | 引入外部依赖 | integration 契约 | Tier 1 | 决策树拦截 |
-| 架构变更 / 推翻旧决策 | ADR（新）+ 同步 explanation | Tier 2 | design |
+| 架构变更 / 推翻旧决策 | 在 `explanation/` 新增 ADR + 同步相关 explanation | Tier 2 | design |
 
 ---
 
@@ -63,7 +64,7 @@
 |---|---|---|
 | Tier 0 | — | 不维护；specs 归档即终态，reference 自动 |
 | Tier 1 | 行为确实变了 | 机会式顺手改，**不强制同 diff** |
-| Tier 2 | ADR 被推翻 / 架构调整 | 新 ADR 标记旧 ADR Superseded（**追加，不改写**）；受影响的 explanation 同 diff 更新 |
+| Tier 2 | ADR 被推翻 / 架构调整 | 在 `explanation/` 内新增 ADR 标记旧 ADR Superseded（**追加，不改写**）；受影响的 explanation 同 diff 更新 |
 
 **关键原则：优先"追加"而非"修改"**。ADR 用 Superseded 模式（见第 7 节），specs 用新文件而非改旧文件——减少"需同步多文件"的场景，即减少漂移面。
 
@@ -83,12 +84,12 @@
 
 ## 7. ADR 生命周期状态机（唯一正式状态机）
 
-只对 ADR 用状态机；`doc-meta` 仅用于 ADR 与 explanation。
+只对 `explanation/` 中"记录决策的 ADR 子类"用状态机；`doc-meta` 仅用于这类文档。
 
 ```html
 <!-- doc-meta
 status: Proposed | Accepted | Deprecated | Superseded
-superseded-by: specs/.../adr/0007-xxx.md   # 仅 Superseded 时填
+superseded-by: docs/explanation/why-xxx.md   # 仅 Superseded 时填
 owner: <团队或负责人>
 last-reviewed: 2026-07-23
 -->
@@ -144,7 +145,7 @@ last-reviewed: 2026-07-23
 ```html
 <!-- doc-meta
 status: Superseded
-superseded-by: docs/architecture/adr/0007-trigger-via-github.md
+superseded-by: docs/explanation/why-trigger-via-github.md
 owner: @architect
 last-reviewed: 2026-07-23
 -->
@@ -218,7 +219,7 @@ def insert_retry(self, event_id: str, action: dict, due_at: float) -> int:
 | 阶段 | 文档动作 | 层级 |
 |---|---|---|
 | proposal | 写 PRD（specs，过程文档） | T0 |
-| design | 写 explanation；认证范式关键 → 写 ADR | T2 |
+| design | 在 `explanation/` 写原理；认证范式关键 → 在其中追加一条 ADR 决策记录 | T2 |
 | implementation | 函数补 docstring → reference 自动 | T0 |
 | 加依赖（决策树拦截） | **必须**写 integration 契约（写一次） | T1 |
 | verdict | 写 how-to | T1 |
@@ -232,7 +233,7 @@ def insert_retry(self, event_id: str, action: dict, due_at: float) -> int:
 > 体现 Tier 1「机会式、不强制」与 Tier 0「自动」。
 
 ### 场景 C：大重构推翻旧决策（重点）
-- design 阶段：写 **新 ADR**（Accepted），其 `Supersedes` 指向旧 ADR；**旧 ADR 只翻 status 为 Superseded，正文不改**。
+- design 阶段：在 `explanation/` 写 **新 ADR**（Accepted），其 `Supersedes` 指向旧 ADR；**旧 ADR（同目录旧篇）只翻 status 为 Superseded，正文不改**。
 - 受影响的 explanation：同 diff 更新（Tier 2 唯一强制同步点）。
 - reference：随代码自动。
 - tutorial：仅当上手路径受影响才动（Tier 1 机会式）。

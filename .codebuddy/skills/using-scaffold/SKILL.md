@@ -48,7 +48,7 @@ description: >-
 - 不要跳过 spec 直接写码（除非决策树判定为纯文档/小改动）。
 - 不要手改 `docs/reference/_generated/` 下的文件（它们是自动生成的）。
 - 不要用"删掉/改写旧 ADR"来表达决策变更——永远用追加 Superseded。
-- 不要给 every 文档强加状态机/doc-meta；只有 ADR 和 explanation 才需要。
+- 不要给 every 文档强加状态机/doc-meta；只有 `explanation/` 中记录决策的 ADR 子类才需要。
 - 不要为"完备性"写长散文：constitution 保持最短，自由维护义务压到最小。
 - 不要把密钥、`.env` 写进文档或日志。
 
@@ -71,24 +71,24 @@ AGENTS.md → constitution.md → docs/README.md（索引）
 | **Tier 0 不维护** | `specs/*` | 过程文档，验收即归档终态；状态靠"文件在 active 还是 archive"表达，**无元数据、不维护** |
 | | `reference/` | `gen-refs.py` 自动渲染，**禁手改**，提交即重生成 |
 | **Tier 1 写一次** | `how-to` / `tutorial` / `integration` / `runbook` | 触发点写出，**行为真的变了才顺手改**，不强制同 diff、无状态机 |
-| **Tier 2 真生命周期** | `ADR` / `explanation`（架构原理） | 决策会随时间被推翻；用状态机 + `doc-meta` |
+| **Tier 2 真生命周期** | `explanation/`（架构原理 / 决策记录；ADR 是其带状态子类） | 决策会随时间被推翻；用状态机 + `doc-meta` |
 
 ### 3.3 创建时机（钉在 spec 5 步节点）
 - 需求澄清 → PRD / change-proposal（Tier 0）
 - 设计决策（普通）→ explanation（Tier 2）
-- 设计决策（重大/可逆风险高）→ **ADR**（Tier 2）
+- 设计决策（重大/可逆风险高）→ 在 `explanation/` 写决策记录（ADR，Tier 2）
 - 编码实现 → reference 条目（自动，Tier 0）
 - 验收 → how-to（Tier 1）
 - 发布/里程碑 → tutorial（Tier 1）
 - 引入外部依赖 → integration 契约（决策树拦截，Tier 1）
-- 架构变更/推翻旧决策 → 新 ADR + 同步 explanation（Tier 2）
+- 架构变更/推翻旧决策 → 在 `explanation/` 新增 ADR + 同步相关 explanation（Tier 2）
 
 ### 3.4 ADR 状态机（唯一正式状态机）
-`doc-meta` 仅用于 ADR 与 explanation：
+`doc-meta` 仅用于 `explanation/` 中"记录决策的 ADR 子类"：
 ```
 <!-- doc-meta
 status: Proposed | Accepted | Deprecated | Superseded
-superseded-by: docs/architecture/adr/0007-xxx.md   # 仅 Superseded 时
+superseded-by: docs/explanation/why-xxx.md   # 仅 Superseded 时
 owner: <团队或负责人>
 last-reviewed: YYYY-MM-DD
 -->
