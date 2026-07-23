@@ -171,7 +171,7 @@ last-reviewed: 2026-08-10
 - 正面：免维护宿主机 timer。
 - 负面：失去本地可观测性，需在 Actions 补告警。
 ## Supersedes
-[ADR-0003](0003-trigger-separation.md)
+ADR-0003（对应 `docs/explanation/why-trigger-separation.md`）
 ```
 
 > 注意：旧 ADR 正文一字不改，只翻 status。决策链完整、零失真。
