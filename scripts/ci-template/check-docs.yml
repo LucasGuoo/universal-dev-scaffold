@@ -26,4 +26,4 @@ jobs:
       - name: Verify every src function/class has a docstring (中文, 按需小节)
         run: python scripts/check-docs.py --require-docstrings
       - name: Verify generated reference docs are up to date
-        run: python scripts/gen-refs.py --check
+        run: python scripts/optional/gen-refs.py --check

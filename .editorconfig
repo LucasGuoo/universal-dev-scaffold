@@ -1,0 +1,57 @@
+# EditorConfig — 跨编辑器代码风格统一
+# 详见：https://editorconfig.org
+#
+# 所有主流编辑器/IDE 原生支持本文件（VS Code、JetBrains、Vim、Xcode 等）。
+# 具体项目可按语言惯例调整缩进大小和文件类型规则。
+
+# 声明这是最顶层配置，搜索到此停止
+root = true
+
+# ===== 全局默认 =====
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 4
+
+# ===== JavaScript / TypeScript / JSON / YAML（2 空格）=====
+[*.{js,jsx,ts,tsx,json,yml,yaml,mjs,cjs}]
+indent_size = 2
+
+# ===== Python（4 空格）=====
+[*.py]
+indent_size = 4
+
+# ===== Go（Tab）=====
+[*.go]
+indent_style = tab
+
+# ===== Rust（4 空格）=====
+[*.rs]
+indent_size = 4
+
+# ===== Java / Kotlin（4 空格）=====
+[*.{java,kt}]
+indent_size = 4
+
+# ===== HTML / CSS / SCSS（2 空格）=====
+[*.{html,css,scss,less,vue,svelte}]
+indent_size = 2
+
+# ===== Makefile（必须 Tab）=====
+[Makefile]
+indent_style = tab
+
+# ===== Markdown（保留尾部空格，因双空格=换行）=====
+[*.md]
+trim_trailing_whitespace = false
+
+# ===== Shell 脚本（2 空格）=====
+[*.{sh,bash,zsh}]
+indent_size = 2
+
+# ===== 配置文件（2 空格）=====
+[*.{toml,ini,cfg,conf}]
+indent_size = 2

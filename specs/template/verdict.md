@@ -15,13 +15,12 @@
 - [ ] 密钥 / 敏感信息未入 git、未打印日志
 - [ ] 提交信息符合 Conventional Commits 且关联 spec
 
-## 阶段三：文档闸门自查（详见 `docs/doc-lifecycle.md` 与 `.codebuddy/rules/04-doc-lifecycle`）
-- [ ] 改动的函数/类已同 diff 更新中文 docstring（`gen-refs.py` 渲染的 reference 已重生成）
+## 阶段三：文档同步自查（唯一强制同步点，详见 `docs/doc-lifecycle.md` 与 `docs/rules/doc-lifecycle.md`）
+- [ ] 改动的函数/类已同 diff 更新 docstring（如项目采用 docstring 机制）
 - [ ] 引入外部依赖 / 接口对接 → 已建 `docs/integration/` 契约（写一次即可）
-- [ ] 本次是否推翻了某条旧 ADR？是 → 新 ADR 标记旧 ADR `Superseded` 且旧正文不改；否 → 跳过
-- [ ] 行为确实变更的功能 → 对应 `how-to` / `tutorial` 已机会式更新（无变更则不碰）
+- [ ] 推翻旧架构决策 → 新 ADR 标记旧 ADR `Superseded`（旧正文不改）
+- [ ] 行为确实变更的功能 → 对应 how-to / tutorial 已机会式更新（无变更则不碰）
 - [ ] `docs/README.md` 索引已同步（增删文档即更新）
-- [ ] 本地跑 `python scripts/check-docs.py` 无 docstring 缺失 / 索引错误
 
 ## 结论
 - [ ] 通过（移入 `specs/archive/`）

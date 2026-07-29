@@ -1,0 +1,88 @@
+# .gitattributes — Git 行为配置
+#
+# 控制行尾标准化、二进制文件标记、GitHub 语言统计、发布打包。
+# 提交到仓库后所有 clone 的人自动生效，无需本地配置。
+# 详见：https://git-scm.com/docs/gitattributes
+
+# ===== 默认：自动检测文本并标准化行尾 =====
+*               text=auto
+
+# ----- 源代码：强制 LF（无论什么平台 checkout）-----
+*.py            text eol=lf
+*.js            text eol=lf
+*.ts            text eol=lf
+*.jsx           text eol=lf
+*.tsx           text eol=lf
+*.go            text eol=lf
+*.rs            text eol=lf
+*.java          text eol=lf
+*.kt            text eol=lf
+*.rb            text eol=lf
+*.sh            text eol=lf
+*.bash          text eol=lf
+*.zsh           text eol=lf
+
+# ----- 配置/标记文件：强制 LF -----
+*.yaml          text eol=lf
+*.yml           text eol=lf
+*.json          text eol=lf
+*.toml          text eol=lf
+*.ini           text eol=lf
+*.cfg           text eol=lf
+*.xml           text eol=lf
+*.md            text eol=lf
+*.txt           text eol=lf
+*.html          text eol=lf
+*.css           text eol=lf
+*.scss          text eol=lf
+
+# ----- Windows 脚本：保持 CRLF -----
+*.bat           text eol=crlf
+*.cmd           text eol=crlf
+*.ps1           text eol=crlf
+
+# ----- 二进制文件：禁行尾转换 + 禁文本 diff -----
+*.png           binary
+*.jpg           binary
+*.jpeg          binary
+*.gif           binary
+*.ico           binary
+*.webp          binary
+*.svg           binary
+*.pdf           binary
+*.doc           binary
+*.docx          binary
+*.xls           binary
+*.xlsx          binary
+*.ppt           binary
+*.pptx          binary
+*.zip           binary
+*.tar           binary
+*.gz            binary
+*.7z            binary
+*.woff          binary
+*.woff2         binary
+*.ttf           binary
+*.eot           binary
+
+# ----- Lockfile / 生成文件：标记为 generated（GitHub PR 自动折叠）-----
+package-lock.json   linguist-generated=true
+yarn.lock           linguist-generated=true
+pnpm-lock.yaml      linguist-generated=true
+poetry.lock         linguist-generated=true
+go.sum              linguist-generated=true
+Cargo.lock          linguist-generated=true
+Gemfile.lock        linguist-generated=true
+
+# ----- 文档 / Specs 不计入语言统计 -----
+docs/           linguist-documentation
+specs/          linguist-documentation
+
+# ----- 发布打包时排除开发文件 -----
+.github/            export-ignore
+.editorconfig       export-ignore
+.gitattributes      export-ignore
+.gitignore          export-ignore
+specs/              export-ignore
+tests/              export-ignore
+.codebuddy/         export-ignore

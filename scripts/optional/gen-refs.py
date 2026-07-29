@@ -23,9 +23,9 @@ what a section actually needs (Google summary + custom ops sections, any order):
     '''
 
 Usage:
-    python scripts/gen-refs.py            # write docs/reference/_generated/*.md
-    python scripts/gen-refs.py --check    # fail if generated docs are stale
-    python scripts/gen-refs.py --dry-run  # print to stdout, write nothing
+    python scripts/optional/gen-refs.py            # write docs/reference/_generated/*.md
+    python scripts/optional/gen-refs.py --check    # fail if generated docs are stale
+    python scripts/optional/gen-refs.py --dry-run  # print to stdout, write nothing
 Exit: 0 success; 1 if --check finds stale docs.
 """
 from __future__ import annotations
@@ -150,7 +150,7 @@ def render_module(mod_path: Path, tree: ast.Module) -> str:
         if s:
             title += " — " + s.splitlines()[0]
     blocks += [title, "",
-               "> 参考类文档（Reference）。由 `scripts/gen-refs.py` 从 docstring "
+               "> 参考类文档（Reference）。由 `scripts/optional/gen-refs.py` 从 docstring "
                "自动生成；改代码请同步 docstring 并重跑本脚本。"]
     if mdoc:
         s, secs = parse_docstring(mdoc)

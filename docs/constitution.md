@@ -33,9 +33,18 @@
 ## 10. 多代理兼容
 - 行为约定统一在 `AGENTS.md`；`CLAUDE.md` / `COPILOT.md` / `GEMINI.md` 等仅做重定向。
 
-## 11. 文档与代码同步（docstring 即真相源，可选工具链）
-- 采用「docstring 即真相源」：函数/类的 docstring 是 reference 文档的唯一来源，由 `scripts/gen-refs.py`（仅标准库）自动渲染到 `docs/reference/_generated/`。
-- docstring **用中文写**、小节全部可选按需写（不必凑齐）：Google 摘要（一句话说清功能）+ 自定义运维小节（职责/触发/入参/处理顺序/返回/关键分支/关键副作用/配置依赖/设计原因/运维注意/关联），空行分隔摘要与小节；含关键算法或非直观决策的应补「处理顺序」（主流程步骤）「设计原因」（取舍/坑）。
-- 小节标题自由（`标题：内容` 任意中文均可）；生成器按 `CANON` 仅决定渲染顺序。
-- AI 改函数必须同 diff 更新其 docstring；生成器自动取行号与签名，永不失真。`scripts/check-docs.py` 校验 docs↔src 一致性，并可 `--require-docstrings` 强制全员有 docstring。
-- 该工具链为**可选加成**，非核心框架依赖；CI 模板见 `scripts/ci-template/check-docs.yml`（opt-in，默认不开启），符合 YAGNI。
+## 11. 文档与代码同步
+- 项目必须有 reference 文档（形式由项目按语言自定：docstring 自动生成、手写、或语言生态工具）。
+- 改函数/类 → 同 diff 更新对应文档源（docstring 或 reference 文件）。
+- `scripts/check-docs.py` 校验 docs↔src 一致性（可选 CI 门禁）。
+
+## 12. 代码工程基础
+- 必须有 `.editorconfig`（统一缩进/行尾/编码）和 `.gitignore`。
+- 推荐有 `.gitattributes`（行尾标准化、二进制标记、发布打包）。
+- 具体项目必须配置 Linter + Formatter（工具链按语言选型，详见 `docs/rules/code-management.md`）。
+
+## 13. 依赖管理
+- Lockfile 必须入 git（确保可复现构建）。
+- 遵循语义化版本（SemVer）。
+- 引入新依赖或 major 升级走 change-proposal。
+- 最小依赖（YAGNI）：不引入未用依赖。

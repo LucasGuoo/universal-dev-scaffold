@@ -8,7 +8,7 @@ Keeps the Diátaxis docs under ``docs/`` in sync with ``src/``:
 3. ``src/...`` paths cited in docs exist.
 4. (opt-in, --require-docstrings) Every top-level function/class in ``src/``
    has a docstring; missing ones are reported (warn by default, error with flag).
-   Docstrings are the source of truth — ``scripts/gen-refs.py`` renders them into
+   Docstrings are the source of truth — ``scripts/optional/gen-refs.py`` renders them into
    the reference docs, so the old line-number check is no longer needed.
 
 Design note: reference docs are generated from docstrings, so line numbers and

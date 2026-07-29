@@ -2,7 +2,7 @@
 
 > 本文定义脚手架中技术文档的**创建时机、维护分层、使用消费与防漂移机制**。
 > 核心立场：**生命周期只对"需要动态维护"的文档有意义；过程文档不维护**。工程健壮性优先于完备性——能交给 CI / 规则的，绝不靠 LLM 自觉。
-> 零依赖（纯 Markdown + `.mdc` 规则）。外部工具（Spectral / openapi-diff / 契约测试框架）仅作可选 CI 门禁提及，不属于核心脚手架。
+> 零依赖（纯 Markdown + `docs/rules/` 规则文本）。外部工具仅作可选 CI 门禁提及，不属于核心脚手架。
 
 ---
 
@@ -21,7 +21,7 @@
 
 ### Tier 0 — 过程 / 自动文档（**不维护生命周期**）
 - `specs/*`（proposal / design / tasks / verdict）：**过程文档**，验收即归档，归档后不再维护。状态靠"文件是否存在 / 在 active 还是 archive"表达，不需要任何元数据块。
-- `reference/`（gen-refs 自动生成）：**禁手改**，提交即重渲染，无人工维护。
+- `reference/`（自动生成或手写）：如项目采用自动生成机制，禁手改、提交即重渲染；如手写，按 Tier 1 维护。
 
 ### Tier 1 — 相对稳定的交付物（**写一次，偶尔机会式更新，无正式生命周期**）
 - `how-to`、`tutorial`、`integration` 契约、`runbook`：在触发点写出，**之后仅在"行为确实变了"时顺手改**；不做状态机、不强求同 diff 更新（降低 LLM 负担与漂移面）。
@@ -38,22 +38,22 @@
 
 ## 3. 创建触发矩阵
 
-| 触发点 | 产出文档 | 层级 | 对应 spec 阶段 |
+> **简化原则**：specs 过程中（proposal / design / tasks / implementation）不触发 docs 同步义务。
+> 唯一强制同步点：**verdict 阶段**（任务完成后，归档前）。
+
+| 触发事件 | 产出文档 | 层级 | 强制时机 |
 |---|---|---|---|
-| 需求澄清 | PRD / change-proposal | Tier 0 | proposal |
-| 设计决策（普通） | explanation | Tier 2 | design |
-| 设计决策（重大/可逆风险高） | 在 `explanation/` 写决策记录（ADR） | Tier 2 | design |
-| 编码实现 | reference 条目（自动） | Tier 0 | implementation |
-| 验收 | how-to | Tier 1 | verdict |
-| 发布 / 里程碑 | tutorial | Tier 1 | release |
-| 引入外部依赖 | integration 契约 | Tier 1 | 决策树拦截 |
-| 架构变更 / 推翻旧决策 | 在 `explanation/` 新增 ADR + 同步相关 explanation | Tier 2 | design |
+| 设计决策（重大/可逆风险高） | ADR | Tier 2 | verdict 时检查 |
+| 编码实现 | reference 条目（自动或手写） | Tier 0/1 | verdict 时检查 |
+| 新功能上线 | how-to / tutorial | Tier 1 | verdict 时检查 |
+| 引入外部依赖 | integration 契约 | Tier 1 | 决策树拦截（写一次即可） |
+| 架构变更 / 推翻旧决策 | 新 ADR + 更新旧 ADR status | Tier 2 | verdict 时检查 |
 
 ---
 
 ## 4. 生成 vs 手写分工
 
-- **reference = 纯自动**：`gen-refs.py` 从 docstring 渲染，**禁手改**，提交即重生成，CI `--check` 拦不同步。
+- **reference = 项目自定**：可采用 docstring 自动生成（如 `scripts/optional/gen-refs.py` 或语言生态工具），也可手写。如自动生成，禁手改、提交即重生成。
 - **Tier 1 / Tier 2 = 手写但受控**：只在第 3 节对应节点产出，不日常维护。
 
 ---
@@ -115,7 +115,7 @@ Proposed ──评审通过──▶ Accepted ──被新决策推翻──▶ 
 流程文档再完备，LLM 也可能不照做。对策按"可靠度"从高到低：
 
 1. **能检查的都交给 CI，不靠自觉**：`check-docs.py` 作为 PR 门禁——docstring 缺失、索引不完整 → 失败并阻断合并。这是最强约束，LLM 无法绕过。
-2. **硬规则写成 `.mdc`（IDE 自动加载、不可跳过）**：如"改 `src/` 必须补 docstring""加外部依赖必须建 `integration` 文档"。这是机器红线，不是建议。
+2. **硬规则写入 `docs/rules/`**（项目可按需映射为 IDE 红线规则）：如"改 `src/` 必须补 docstring""加外部依赖必须建 `integration` 文档"。这是机器红线，不是建议。
 3. **优先追加、避免修改**：ADR 用 Superseded 追加；specs 用新文件。减少需同步的文件数 = 减少漂移面。
 4. **最小化自由维护义务**：不在每次变更都要求更新 explanation / how-to 散文（难验证、易漂移）；只在"ADR 被推翻"这种**明确事件**才要求动作。把模糊义务转成事件触发。
 5. **结构即信号，少用自由文本状态**：用"文件/目录是否存在""docstring 是否齐全""索引是否列全"等机械信号表达状态，而非靠 `doc-meta` 里的自由字段（LLM 容易漏填或填错）。
@@ -176,7 +176,9 @@ ADR-0003（对应 `docs/explanation/why-trigger-separation.md`）
 
 > 注意：旧 ADR 正文一字不改，只翻 status。决策链完整、零失真。
 
-### 9.3 reference（自动，勿手改，仅展示对照）
+### 9.3 reference（自动或手写，按项目选型）
+
+如采用 docstring 自动生成（以 Python 为例）：
 
 源 docstring（`src/storage.py`）：
 
@@ -191,7 +193,7 @@ def insert_retry(self, event_id: str, action: dict, due_at: float) -> int:
     """
 ```
 
-`gen-refs.py` 渲染（`docs/reference/_generated/storage.md`）：
+`gen-refs.py`（或语言生态工具）渲染（`docs/reference/`）：
 
 ```markdown
 ### `insert_retry(event_id, action, due_at) -> int`
@@ -241,7 +243,7 @@ def insert_retry(self, event_id: str, action: dict, due_at: float) -> int:
 ### 场景 D：LLM 漂移防护演练（工程健壮性）
 1. LLM 改了 `src/` 函数却忘补 docstring。
 2. 提 PR → CI 跑 `check-docs.py --require-docstrings` → **失败，阻断合并**。
-3. LLM 被规则 `.mdc` 红线提醒，补回 docstring 后通过。
+3. LLM 被 `docs/rules/` 规则提醒，补回 docstring 后通过。
 > 说明：纪律不依赖 LLM 自觉，而依赖 CI 门禁 + 规则红线（第 8 节 1、2）。
 
 ### 场景 E：Agent 进场第一天（消费路径）
@@ -255,11 +257,11 @@ def insert_retry(self, event_id: str, action: dict, due_at: float) -> int:
 
 ## 11. 落地清单（给脚手架维护者）
 
-本文件落地后，三处轻改动（均零依赖，**重点在 2、3 的兜底机制**）：
+本文件落地后，检查以下配套项：
 
-1. `AGENTS.md` 变更决策树补「文档闸门」三句话（见第 3、8 节）。
-2. **新增 `.codebuddy/rules/04-doc-lifecycle/RULE.mdc`**：把"改 `src/` 必须补 docstring""加外部依赖必须建 integration 文档"写成 IDE 红线。
-3. **`check-docs.py` 作为 CI 门禁**（PR 跑 `--require-docstrings` + 索引校验）：这是真正的强制，不是建议。
-4. （可选）`specs/template/verdict.md` 加「文档闸门」清单。
+1. `AGENTS.md` 变更决策树已含「文档闸门」要点。
+2. **`docs/rules/doc-lifecycle.md`** 已包含红线规则摘要（项目可按需映射为各自工具的规则格式）。
+3. **`check-docs.py` 作为可选 CI 门禁**（PR 跑索引校验）。
+4. `specs/template/verdict.md` 已含「文档同步自查」清单。
 
-> 本文本身已可独立使用；第 8 节的 CI + 规则三件套才是纪律的真正保障。
+> 本文本身已可独立使用；第 8 节的 CI + 规则 + 追加式 ADR 才是纪律的真正保障。
