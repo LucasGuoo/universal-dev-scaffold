@@ -57,14 +57,10 @@
 │   ├── template/                  # 6 个技能化模板
 │   ├── active/                    # 进行中（.gitkeep）
 │   └── archive/                   # 已验收（.gitkeep）
-├── skills/                        # 通用 Agent Skills（可选）
-│   ├── using-scaffold/             #   脚手架全流程引导（决策树 + spec + verdict + 文档分类）
-│   ├── scaffold-handoff/           #   跨 Agent 交接协议
-│   └── references/                #   详细参考文档
-└── scripts/                       # 文档工具链（可选）
-    ├── check-docs.py              #   docs↔src 一致性校验
-    ├── optional/gen-refs.py       #   docstring→reference（Python，可选）
-    └── ci-template/check-docs.yml #   opt-in CI 模板
+└── skills/                        # 通用 Agent Skills（可选）
+    ├── using-scaffold/             #   脚手架全流程引导（决策树 + spec + verdict + 文档分类）
+    ├── scaffold-handoff/           #   跨 Agent 交接协议
+    └── references/                #   详细参考文档
 ```
 
 ## 3. 搭建步骤（复用清单）

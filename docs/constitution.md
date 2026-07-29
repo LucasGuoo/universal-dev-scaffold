@@ -36,7 +36,7 @@
 ## 11. 文档与代码同步
 - 项目必须有 reference 文档（形式由项目按语言自定：docstring 自动生成、手写、或语言生态工具）。
 - 改函数/类 → 同 diff 更新对应文档源（docstring 或 reference 文件）。
-- `scripts/check-docs.py` 校验 docs↔src 一致性（可选 CI 门禁）。
+- 推荐在 CI 中加文档一致性检查（opt-in，工具按语言选型，详见 `docs/rules/code-management.md`）。
 
 ## 12. 代码工程基础
 - 必须有 `.editorconfig`（统一缩进/行尾/编码）和 `.gitignore`。

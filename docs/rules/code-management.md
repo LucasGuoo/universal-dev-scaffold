@@ -33,6 +33,23 @@
 - `type ∈ feat / fix / docs / spec / refactor / chore / test / build / ci`
 - 关联 spec（如有）：在 commit message 的 body 中引用 `specs/active/<slug>/`
 
+## 文档工具链（按语言选型）
+
+脚手架不附带任何脚本，reference 文档的生成 / 校验工具由项目按语言选型：
+
+| 语言 | Reference 生成 | 文档校验 / CI |
+|------|---------------|---------------|
+| Python | Sphinx autodoc / mkdocstrings / pdoc | 自定义脚本或 pre-commit hook |
+| JS/TS | TypeDoc / API Extractor | eslint-plugin-jsdoc |
+| Go | godoc / pkgsite | go vet |
+| Java | Javadoc | checkstyle / maven-javadoc-plugin |
+| Rust | rustdoc | cargo doc + clippy |
+
+**原则**：
+- 改函数/类 → 同 diff 更新 docstring 或 reference 文件。
+- 自动生成的 reference 禁手改，提交即重生成。
+- 推荐在 CI 中加文档一致性检查（opt-in，不强制）。
+
 ## 工程目录约定
 
 脚手架推荐的通用目录结构（具体项目按需调整）：
@@ -43,7 +60,6 @@
 ├── tests/               # 测试代码
 ├── docs/                # 文档（Diátaxis 四象限）
 ├── specs/               # 过程文档（spec-driven）
-├── scripts/             # 工具脚本
 ├── skills/              # Agent Skills（可选）
 ├── .github/workflows/   # CI/CD（opt-in）
 ├── .editorconfig        # 编辑器配置

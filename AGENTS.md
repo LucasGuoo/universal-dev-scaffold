@@ -41,9 +41,8 @@ proposal.md → 你确认 → design.md → 你确认 → tasks.md → 你确认
 
 ## 文档工具链（可选，详见 `docs/rules/code-management.md`）
 - docstring 即真相源（如采用）：函数/类 docstring 是 reference 文档的唯一来源，具体生成工具由项目按语言选型。
-- `scripts/optional/gen-refs.py` 为可选参考脚本（Python 项目），其他语言推荐各自生态工具。
-- `scripts/check-docs.py` 校验 docs↔src 一致性。
-- 工具为零依赖加成，非核心框架；需要 CI 把关时把 `scripts/ci-template/check-docs.yml` 复制到 `.github/workflows/`（opt-in）。
+- 脚手架不附带任何脚本，工具链由项目自行配置（Sphinx / TypeDoc / godoc / Javadoc / rustdoc 等）。
+- 推荐在 CI 中加文档一致性检查（opt-in，不强制）。
 
 ## Handoff Protocol（跨 Agent / 跨工具交接）
 1. 当前 Agent 在对应 `tasks.md` 末尾「接手上下文」补：阶段 / 已完成 / 未完成及阻塞 / 关键决策 / 建议下一步。

@@ -53,7 +53,7 @@
 
 ## 4. 生成 vs 手写分工
 
-- **reference = 项目自定**：可采用 docstring 自动生成（如 `scripts/optional/gen-refs.py` 或语言生态工具），也可手写。如自动生成，禁手改、提交即重生成。
+- **reference = 项目自定**：可采用 docstring 自动生成（语言生态工具，如 Sphinx / TypeDoc / godoc 等），也可手写。如自动生成，禁手改、提交即重生成。
 - **Tier 1 / Tier 2 = 手写但受控**：只在第 3 节对应节点产出，不日常维护。
 
 ---
@@ -251,7 +251,7 @@ def insert_retry(self, event_id: str, action: dict, due_at: float) -> int:
 2. 读 `docs/constitution.md` → 硬约束。
 3. 读 `docs/README.md` → 索引。
 4. 按任务读 explanation + reference（**不读 tutorial**）。
-5. 改代码 → 同 diff 补 docstring；跑 `python scripts/check-docs.py` 自查。
+5. 改代码 → 同 diff 补 docstring；按项目配置的工具跑文档校验。
 
 ---
 

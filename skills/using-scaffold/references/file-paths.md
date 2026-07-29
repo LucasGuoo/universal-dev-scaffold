@@ -25,5 +25,3 @@ Copy template → `specs/active/YYYY-MM-DD-<slug>/<file>.md`, fill in, follow th
 | `docs/rules/doc-lifecycle.md` | Doc lifecycle red lines |
 | `docs/rules/code-management.md` | Code management rules |
 | `docs/README.md` | Doc index |
-| `scripts/check-docs.py` | Optional CI doc checker |
-| `scripts/optional/gen-refs.py` | Optional Python docstring→reference generator |

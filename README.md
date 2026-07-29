@@ -52,14 +52,10 @@
 │   ├── template/                  # 6 个技能化模板（复制后填入具体 spec）
 │   ├── active/                    # 进行中（.gitkeep）
 │   └── archive/                   # 已验收（.gitkeep）
-├── skills/                        # 通用 Agent Skills（可选）
-│   ├── using-scaffold/             #   脚手架全流程引导（决策树 + spec + verdict + 文档分类）
-│   ├── scaffold-handoff/           #   跨 Agent 交接协议
-│   └── references/                #   详细参考文档（diataxis / adr / file-paths）
-└── scripts/                       # 文档工具链（可选，仅标准库）
-    ├── check-docs.py              #   docs↔src 一致性校验
-    ├── optional/gen-refs.py       #   docstring→reference（Python，可选）
-    └── ci-template/check-docs.yml #   opt-in CI 模板
+└── skills/                        # 通用 Agent Skills（可选）
+    ├── using-scaffold/             #   脚手架全流程引导（决策树 + spec + verdict + 文档分类）
+    ├── scaffold-handoff/           #   跨 Agent 交接协议
+    └── references/                #   详细参考文档（diataxis / adr / file-paths）
 ```
 
 ## 快速开始（复制即用）
@@ -122,16 +118,6 @@
 - 在 `docs/rules/code-management.md` 填入项目具体工具链；
 - 按需填充 `docs/` 各子目录的业务文档；
 - 按需安装 `skills/` 到项目作用域。
-
-## 文档工具链（可选）
-
-脚手架附带一套**零依赖**（仅 Python 标准库）的可选文档工具链：
-
-- `scripts/check-docs.py` — 校验 `docs/` 与 `src/` 一致性。
-- `scripts/optional/gen-refs.py` — 扫描 `src/` docstring 渲染 reference（Python 项目可选；其他语言推荐各自生态工具）。
-- `scripts/ci-template/check-docs.yml` — opt-in 的 GitHub Actions 模板。
-
-Reference 文档的形式由项目按语言自定（自动生成或手写均可），详见 `docs/constitution.md` #11。
 
 ## License
 
