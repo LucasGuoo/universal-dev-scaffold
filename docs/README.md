@@ -1,5 +1,13 @@
 # 文档索引
 
+## 全局入口
+
+| 文档 | 用途 | 主要读者 |
+|---|---|---|
+| [`OVERVIEW.md`](./OVERVIEW.md) | **文档总览 / 导航地图**（按角色给出阅读路径，先读它） | 全员（尤其新人 / 外部读者） |
+
+> 第一次进仓库：先读 [`OVERVIEW.md`](./OVERVIEW.md) 建立全局视图，再按地图跳到对应文档；查具体文件回本索引。
+
 ## 治理与规范
 
 | 文档 | 用途 | 主要读者 |
@@ -25,6 +33,7 @@
 | [`how-to/`](./how-to/) | 问题导向 | 解决特定问题的步骤（含 runbook） |
 | [`reference/`](./reference/) | 信息导向 | 精确描述 API / 接口 / 配置 |
 | [`explanation/`](./explanation/) | 理解导向 | 解释"为什么"（含 ADR 架构决策记录） |
+| ↳ [`ADR-0001`](./explanation/ADR-0001-global-overview-map.md) | ADR | 引入 OVERVIEW.md 作为全局导航地图（Accepted） |
 
 ## 业务文档
 

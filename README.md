@@ -36,6 +36,7 @@
 ├── .gitattributes                 # Git 行为配置
 ├── .gitignore                     # 忽略规则
 ├── docs/
+│   ├── OVERVIEW.md                # 文档总览 / 导航地图（全局入口，先读它）
 │   ├── constitution.md            # 硬约束（13 条通用原则）
 │   ├── scaffold-setup-guide.md    # 搭建指南（含工具适配 / 代码管理适配）
 │   ├── doc-lifecycle.md           # 文档生命周期规范
