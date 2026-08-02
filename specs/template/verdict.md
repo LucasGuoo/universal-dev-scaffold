@@ -9,11 +9,19 @@
 - [ ] 范围边界内，未做 proposal 明确不做的事（YAGNI）？
 
 ## 阶段二：代码质量自查
-- [ ] 测试通过（推荐 TDD，红灯 → 绿灯）
+- [ ] 测试通过（推荐 TDD，红灯 → 绿灯）；有客观验证证据（验证非协商）
 - [ ] 无占位符 / 模糊指示
-- [ ] 符合 DRY / YAGNI（无预建未用能力）
+- [ ] 符合 DRY / YAGNI（无预建未用能力）；DAMP > DRY
 - [ ] 密钥 / 敏感信息未入 git、未打印日志
 - [ ] 提交信息符合 Conventional Commits 且关联 spec
+- [ ] 稳定性五板斧：可读性(意图优先) / 变更 ≤~100 行 / 函数 ≤~500 行 / 错误处理 Fail Fast / 可测试性(DI)
+- [ ] 安全基线：输入校验 / 注入防护 / 密钥不裸奔（见 `docs/rules/quality-gates.md`）
+
+## 阶段二·五：金线三问验收（唯一判准，见 `docs/constitution.md#0`）
+- [ ] ① 意图可读：人 / AI 一眼能懂它做什么，不用猜
+- [ ] ② 可验证：有测试 / 构建 / 运行证据，能客观判断做对没
+- [ ] ③ 服务业务：它真解决了 proposal 里的实际问题
+- [ ] 无"反理性化表"借口绕过闸门（见 `docs/rules/quality-gates.md`）
 
 ## 阶段三：文档同步自查（唯一强制同步点，详见 `docs/doc-lifecycle.md` 与 `docs/rules/doc-lifecycle.md`）
 - [ ] 改动的函数/类已同 diff 更新 docstring（如项目采用 docstring 机制）
